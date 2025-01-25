@@ -1,0 +1,19 @@
+{
+  "name": "@pick-em-mono/pick-em",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "lint": "eslint ./app",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules && rm -rf .output && rm -rf .vinxi"
+  },
+  "nx": {
+    "name": "pick-em",
+    "projectType": "application",
+    "sourceRoot": "apps/pick-em/app"
+  }
+}
