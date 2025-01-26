@@ -6,6 +6,8 @@ import {
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AppSidebar } from '@/components/app-sidebar';
+import { DashboardContainer } from '@/components/dashboard-container';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Dashboard = () => {
   return (
@@ -20,7 +22,21 @@ const Dashboard = () => {
           </Avatar>
         </header>
         <section>
-          <h1>Pick-em</h1>
+          <DashboardContainer>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Dashboard Card</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Your content here
+                  </p>
+                </CardContent>
+              </Card>
+              {/* More cards */}
+            </div>
+          </DashboardContainer>
         </section>
       </SidebarInset>
     </SidebarProvider>
