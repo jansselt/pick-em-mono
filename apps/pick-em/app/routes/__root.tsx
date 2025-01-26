@@ -1,12 +1,49 @@
-// app/routes/__root.tsx
 import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
 } from '@tanstack/react-router';
 import { Meta, Scripts } from '@tanstack/start';
-import type { ReactNode } from 'react';
-import { ThemeProvider } from '@/components/ui/theme-provider';
+import { StrictMode, type ReactNode } from 'react';
+import {} from '@/ui/theme-provider';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { GlobalProviders } from '@/components/global-providers';
+
+const NotFound = () => {
+  return (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <h1>404 - Page Not Found</h1>
+    </div>
+  );
+};
+
+const RootComponent = () => {
+  return (
+    <RootDocument>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </RootDocument>
+  );
+};
+
+const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
+  return (
+    <html>
+      <head>
+        <Meta />
+      </head>
+      <body>
+        <StrictMode>
+          <GlobalProviders>
+            {children}
+            <ScrollRestoration />
+            <Scripts />
+          </GlobalProviders>
+        </StrictMode>
+      </body>
+    </html>
+  );
+};
 
 export const Route = createRootRoute({
   head: () => ({
@@ -26,36 +63,3 @@ export const Route = createRootRoute({
   component: RootComponent,
   notFoundComponent: NotFound,
 });
-
-function NotFound() {
-  return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <h1>404 - Page Not Found</h1>
-    </div>
-  );
-}
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
-
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
-  return (
-    <html>
-      <head>
-        <Meta />
-      </head>
-      <body>
-        <ThemeProvider defaultTheme="dark">
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-}

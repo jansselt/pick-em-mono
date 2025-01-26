@@ -1,4 +1,3 @@
-// apps/pick-em/vite.config.ts
 import { defineConfig } from 'vite';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';

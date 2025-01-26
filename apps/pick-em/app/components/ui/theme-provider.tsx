@@ -1,4 +1,3 @@
-// app/components/theme-provider.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
@@ -18,12 +17,12 @@ const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
   undefined,
 );
 
-export function ThemeProvider({
+export const ThemeProvider = ({
   children,
   defaultTheme = 'system',
   storageKey = 'vite-ui-theme',
   ...props
-}: ThemeProviderProps) {
+}: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export function ThemeProvider({
       {children}
     </ThemeProviderContext.Provider>
   );
-}
+};
 
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
