@@ -1,12 +1,12 @@
 // app/routes/__root.tsx
-import React from 'react'
 import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
-} from '@tanstack/react-router'
-import { Meta, Scripts } from '@tanstack/start'
-import type { ReactNode } from 'react'
+} from '@tanstack/react-router';
+import { Meta, Scripts } from '@tanstack/start';
+import type { ReactNode } from 'react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -24,14 +24,23 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
-})
+  notFoundComponent: NotFound,
+});
+
+function NotFound() {
+  return (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <h1>404 - Page Not Found</h1>
+    </div>
+  );
+}
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  )
+  );
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
@@ -41,10 +50,12 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <Meta />
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <ThemeProvider defaultTheme="dark">
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

@@ -1,10 +1,10 @@
 // app/client.tsx
 /// <reference types="vinxi/types/client" />
-import React from 'react'
-import { hydrateRoot } from 'react-dom/client'
-import { StartClient } from '@tanstack/start'
-import { createRouter } from './router'
+import { hydrateRoot } from 'react-dom/client';
+import { StartClient } from '@tanstack/start';
+import { createRouter } from './router';
+import './styles/app.css';
 
-const router = createRouter()
+const router = createRouter();
 
-hydrateRoot(document, <StartClient router={router} />)
+hydrateRoot(document, <StartClient router={router} />);
