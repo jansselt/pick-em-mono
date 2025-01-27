@@ -1,5 +1,5 @@
 import { MyPicksView } from '@/components/views/my-picks-view';
-import { SeasonStandingsView } from '@/components/views/season-standings';
+import { SeasonStandingsView } from '@/components/views/season-standings-view';
 import { WeekPicksView } from '@/components/views/week-picks-view';
 import { useDashboardView } from '@/context/dashboard';
 import { createFileRoute } from '@tanstack/react-router';

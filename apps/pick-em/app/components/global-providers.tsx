@@ -1,9 +1,16 @@
-import { ThemeProvider } from './ui/theme-provider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@/ui/theme-provider';
+
+const queryClient = new QueryClient();
 
 export const GlobalProviders = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </QueryClientProvider>
+  );
 };
