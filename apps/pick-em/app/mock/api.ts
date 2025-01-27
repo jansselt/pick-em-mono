@@ -1,6 +1,10 @@
-import { createMockSeason } from './season';
-import { createMockUserSeason, createMockUserSeasons } from './user-season';
-import { ApiSeasonStandings } from '@/types/season-standing';
+import {
+  ApiUserWeekPick,
+  ApiThisWeekPicks,
+} from '@/types/api/this-weeks-picks';
+import { createMockUserSeasons } from './user-season';
+import { ApiSeasonStandings } from '@/types/api/season-standing';
+import { faker } from '@faker-js/faker';
 
 // Simulate network delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,63 +16,6 @@ interface ApiResponse<T> {
 }
 
 export const mockApi = {
-  // Example endpoint that transforms data
-  getCurrentSeason: async (): Promise<
-    ApiResponse<{
-      currentWeek: number;
-      totalWeeks: number;
-      gamesThisWeek: number;
-    }>
-  > => {
-    await delay(500); // Simulate network latency
-    const season = createMockSeason();
-    const currentWeek =
-      season.weeks.find((w) => new Date(w.games[0].date) > new Date())
-        ?.number ?? 1;
-
-    return {
-      data: {
-        currentWeek,
-        totalWeeks: season.weeks.length,
-        gamesThisWeek: season.weeks[currentWeek - 1].games.length,
-      },
-    };
-  },
-
-  getUserSeasonStats: async (
-    userId: string,
-  ): Promise<
-    ApiResponse<{
-      rank: number;
-      totalPoints: number;
-      correctPicks: number;
-      weeklyStats: Array<{
-        week: number;
-        points: number;
-        rank: number;
-      }>;
-    }>
-  > => {
-    await delay(500);
-    const userSeason = createMockUserSeason();
-
-    return {
-      data: {
-        rank: Math.floor(Math.random() * 100) + 1,
-        totalPoints: userSeason.totalPoints,
-        correctPicks: userSeason.userWeeks.reduce(
-          (sum, week) => sum + week.picks.filter((p) => p.isCorrect).length,
-          0,
-        ),
-        weeklyStats: userSeason.userWeeks.map((week) => ({
-          week: week.week.number,
-          points: week.totalPoints,
-          rank: Math.floor(Math.random() * 100) + 1,
-        })),
-      },
-    };
-  },
-
   getSeasonStandings: async (): Promise<ApiResponse<ApiSeasonStandings>> => {
     await delay(500);
     const userSeasons = createMockUserSeasons(25);
@@ -85,6 +32,43 @@ export const mockApi = {
             totalPoints: week.totalPoints,
           })),
       })),
+    };
+  },
+
+  getAllUsersPicksForWeek: async (
+    weekNumber: number,
+  ): Promise<ApiResponse<ApiThisWeekPicks>> => {
+    await delay(500);
+    const userSeasons = createMockUserSeasons(25);
+
+    const userWeekPicks: ApiThisWeekPicks = [];
+
+    userSeasons.forEach((userSeason) => {
+      const thisWeek = userSeason.userWeeks.find(
+        (week) => week.week.number === weekNumber,
+      );
+      if (thisWeek) {
+        const userWeekPick: ApiUserWeekPick = {
+          username: thisWeek.user.name,
+          userAvatar: thisWeek.user.avatar,
+          totalPoints: thisWeek.totalPoints,
+          games: [],
+        };
+
+        thisWeek.picks.forEach((pick) => {
+          userWeekPick.games.push({
+            gameId: pick.game.id,
+            selectedTeamCode: pick.selectedTeam.code,
+            points: pick.points,
+            isCorrect: pick.isCorrect,
+          });
+        });
+        userWeekPicks.push(userWeekPick);
+      }
+    });
+
+    return {
+      data: userWeekPicks,
     };
   },
 };

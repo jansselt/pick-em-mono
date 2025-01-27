@@ -6,6 +6,7 @@ export const createMockTeam = (override?: Partial<Team>): Team => {
     id: faker.string.uuid(),
     name: faker.company.name(),
     logo: faker.image.url({ width: 200, height: 200 }),
+    code: faker.string.alphanumeric(3).toUpperCase(),
     ...override,
   };
 };
